@@ -39,10 +39,11 @@ void KnightsTour::printboard(){
     std::cout<<std::endl;
 }
 
-bool KnightsTour::findpath(int x0, int y0){
+int KnightsTour::findpath(int x0, int y0, bool count=false){
     if(!validcoord(x0, y0)) throw std::invalid_argument("Invalid initial position!");
     chessboard[y0][x0]=1;
     s.push(Node{x0, y0, 0, 1});
+    int paths=0;
 
     while(!s.empty()){
         const Node currnode=s.top();
@@ -51,9 +52,16 @@ bool KnightsTour::findpath(int x0, int y0){
 
         //ya acabamos
         if(currnode.turn==bwidth*bheight){
-            std::cout<<"finish~"; currnode.print();
-            printboard();
-            return true;
+            // std::cout<<"finish~"; currnode.print();
+            paths++;
+    
+            if(count==false){
+                printboard();
+                return paths;
+            }
+
+            chessboard[currnode.y][currnode.x]=notvisited; //backtracking
+            continue;
         }
 
         //ya hicimos todos los movimientos posibles en este nodo, hagamos backtracking
@@ -89,11 +97,18 @@ bool KnightsTour::findpath(int x0, int y0){
         
         //si no se pudo hacer el movimiento, la siguiente iteracion del while intentara otra direccion
     }
-    return false;
+    return paths;
 }
 
 bool KnightsTour::isthereapath(){
     for(int y=0; y<bheight; y++) for(int x=0; x<bwidth; x++)
-        if(findpath(x, y)) return true;
+        if(findpath(x, y)!=0) return true;
     return false;
+}
+
+int KnightsTour::countpaths(){
+    int totalpaths=0;
+    for(int y=0; y<bheight; y++) for(int x=0; x<bwidth; x++)
+        totalpaths+=findpath(x, y, true);
+    return totalpaths;
 }

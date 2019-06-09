@@ -1,8 +1,8 @@
 #include <stack>
 
 struct Node{
-    unsigned int x;
-    unsigned int y;
+    int x;
+    int y;
     int movedir;//0...7
     int turn;
     void print() const{
@@ -27,6 +27,7 @@ class KnightsTour{
         ~KnightsTour();
         bool validcoord(int x, int y);
         void printboard();
-        bool findpath(int x0, int y0);
+        int findpath(int x0, int y0, bool count);
         bool isthereapath();
+        int countpaths();
 };
