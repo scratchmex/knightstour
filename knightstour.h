@@ -23,9 +23,10 @@ class KnightsTour{
         unsigned int bwidth, bheight;
     
     public:
-        KnightsTour(int bwidth, int bheight, int x0, int y0);
+        KnightsTour(int bwidth, int bheight);
         ~KnightsTour();
         bool validcoord(int x, int y);
         void printboard();
-        bool findpath();
+        bool findpath(int x0, int y0);
+        bool isthereapath();
 };

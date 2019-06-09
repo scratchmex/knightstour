@@ -5,7 +5,7 @@
 #include <iomanip>
 #include "knightstour.h"
 
-KnightsTour::KnightsTour(int bw, int bh, int x0, int y0){
+KnightsTour::KnightsTour(int bw, int bh){
     if(bw<1 || bh<1) throw std::invalid_argument("Less than 1 width or height in a chessboard!!");
     this->bwidth=bw;
     this->bheight=bh;
@@ -15,10 +15,6 @@ KnightsTour::KnightsTour(int bw, int bh, int x0, int y0){
         this->chessboard[i]=new int[bwidth];
         std::memset(this->chessboard[i], this->notvisited, bwidth*sizeof(int));
     }
-
-    if(!validcoord(x0, y0)) throw std::invalid_argument("Invalid initial position!");
-    chessboard[y0][x0]=1;
-    s.push(Node{x0, y0, 0, 1});
 }
 
 KnightsTour::~KnightsTour(){
@@ -43,12 +39,15 @@ void KnightsTour::printboard(){
     std::cout<<std::endl;
 }
 
-bool KnightsTour::findpath(){
+bool KnightsTour::findpath(int x0, int y0){
+    if(!validcoord(x0, y0)) throw std::invalid_argument("Invalid initial position!");
+    chessboard[y0][x0]=1;
+    s.push(Node{x0, y0, 0, 1});
+
     while(!s.empty()){
-        printboard();
         const Node currnode=s.top();
         s.pop();
-        std::cout<<"+turn: "; currnode.print();
+        // std::cout<<"+turn: "; currnode.print();
 
         //ya acabamos
         if(currnode.turn==bwidth*bheight){
@@ -60,10 +59,11 @@ bool KnightsTour::findpath(){
         //ya hicimos todos los movimientos posibles en este nodo, hagamos backtracking
         if(currnode.movedir==8){
             chessboard[currnode.y][currnode.x]=notvisited;
-            std::cout<<"backtracking~"; currnode.print();
-            printboard();
+            // std::cout<<"backtracking~"; currnode.print();
             continue;
         }
+        // printboard();
+        
         //push the new move
         //movemos direccion pero no movemos ni turno ni coordenadas
         s.push(Node{currnode.x, currnode.y, currnode.movedir+1, currnode.turn});
@@ -74,21 +74,26 @@ bool KnightsTour::findpath(){
         int possibley=currnode.y+this->moves[currnode.movedir][1];//nueva y
 
         if(!validcoord(possiblex, possibley)){
-            std::cout<<"invalidcoords~x,y["<<possiblex<<","<<possibley<<"]\n";
+            // std::cout<<"invalidcoords~x,y["<<possiblex<<","<<possibley<<"]\n";
             continue;//son validas
         }
         if(chessboard[possibley][possiblex]!=notvisited){
-            std::cout<<"visited~x,y["<<possiblex<<","<<possibley<<"]\n";
+            // std::cout<<"visited~x,y["<<possiblex<<","<<possibley<<"]\n";
             continue;//no se ha visitado
         }
 
         Node move=Node{possiblex, possibley, 0, currnode.turn+1};
         s.push(move);//hacer el movimiento
         chessboard[possibley][possiblex]=move.turn;//marcar casilla como visitada y aumentar turno
-        std::cout<<"moving~"; move.print();
+        // std::cout<<"moving~"; move.print();
         
         //si no se pudo hacer el movimiento, la siguiente iteracion del while intentara otra direccion
     }
-    // std::cout<<"total paths: "<<paths<<std::endl;
+    return false;
+}
+
+bool KnightsTour::isthereapath(){
+    for(int y=0; y<bheight; y++) for(int x=0; x<bwidth; x++)
+        if(findpath(x, y)) return true;
     return false;
 }
