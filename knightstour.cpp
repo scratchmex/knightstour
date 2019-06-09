@@ -1,9 +1,10 @@
-#include "knightstour.h"
 #include <stack>
+#include <stdexcept>
 #include <cstring>
+#include "knightstour.h"
 
 KnightsTour::KnightsTour(int bw, int bh, int x0, int y0){
-    if(bw<1 || bh<1) throw "Less than 1 width or height in a chessboard!!";
+    if(bw<1 || bh<1) throw std::invalid_argument("Less than 1 width or height in a chessboard!!");
     this->bwidth=bw;
     this->bheight=bh;
 
@@ -13,7 +14,7 @@ KnightsTour::KnightsTour(int bw, int bh, int x0, int y0){
         std::memset(chessboard[i], this->notvisited, bheight);
     }
 
-    if(!validcoord(x0, y0)) throw "Invalid initial position!";
+    if(!validcoord(x0, y0)) throw std::invalid_argument("Invalid initial position!");
     s.push(Node{x0, y0, 0});
 }
 
