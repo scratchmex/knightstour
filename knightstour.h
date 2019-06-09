@@ -3,7 +3,11 @@
 struct Node{
     unsigned int x;
     unsigned int y;
-    int currentmove;//0...7
+    int movedir;//0...7
+    int turn;
+    void print() const{
+        std::cout<<"Node{"<<x<<","<<y<<","<<movedir<<","<<turn<<"}\n";
+    }
 };
 
 class KnightsTour{
@@ -15,12 +19,13 @@ class KnightsTour{
                         {-1,2}, {1,2}};//arriba
         std::stack<Node> s;
         int** chessboard;
-        const int notvisited=-1;
+        const int notvisited=0;
         unsigned int bwidth, bheight;
     
     public:
         KnightsTour(int bwidth, int bheight, int x0, int y0);
         ~KnightsTour();
         bool validcoord(int x, int y);
+        void printboard();
         bool findpath();
 };
