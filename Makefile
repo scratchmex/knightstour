@@ -1,33 +1,51 @@
 #Makefile Generico Simple 
+#notdir spaces safe
+s? = $(subst $(empty) ,?,$1)
+?s = $(subst ?, ,$1)
+notdirx = $(call ?s,$(notdir $(call s?,$1)))
+
+#Paths
+BUILD_PATH=build
+BIN_PATH = $(BUILD_PATH)/bin
+SRC_PATH = .
+
+# Nombre del ejecutable 
+BIN_NAME = $(call notdirx,$(CURDIR)).out
+# Para tomar todos los archivos cpp del directorio:
+SRCS = $(wildcard $(SRC_PATH)/*.cpp)
+# Especifica que los nombres de los objetos sera igual al nombre de cada archivo cpp
+OBJS = $(SRCS:$(SRC_PATH)/%.cpp=$(BUILD_PATH)/%.o)
+
 # Especifica el compilador que quiero usar:
 CC = g++
 # Banderas que se dan como opcion al compilador:
 CC_FLAGS = -Wall -std=c++11 -pedantic
 
-#Path
-EXEC_PATH = %tmp%
-# Nombre del ejecutable 
-EXEC = knightstour
-# Para tomar todos los archivos cpp del directorio:
-SRC = $(wildcard *.cpp)
-# Toma solo los archivos cpp que aqui se indican:
-#Object path
-OBJ_PATH=o/
+#recipes
+# Este es el target que Makefile toma por default
+all: $(BIN_PATH)/$(BIN_NAME)
+	@echo "Making all... $(OBJS)"
 
-# Especifica que los nombres de los objetos sera igual al nombre de cada archivo cpp
-OBJ = $(SRC:%.cpp=$(OBJ_PATH)%.o)
+dirs:
+	@echo "Creating directories"
+	@mkdir -p $(BUILD_PATH)
+	@mkdir -p $(BIN_PATH)
 
-# Este es el target que Makefile toma por default 
-all: $(EXEC)
-	echo @$(OBJ)
+clean:
+	@echo "Deleting directories"
+	@rm -r $(BUILD_PATH)
+	@rm -r $(BIN_PATH)
 
-run: $(EXEC)
-	$(EXEC)
+run: $(BIN_PATH)/$(BIN_NAME)
+	@echo "Making: $(BIN_NAME)"
+	$(BIN_PATH)/$(BIN_NAME)
 
-# Reglas para generar el ejecutable usando los OBJ como dependencia 
-$(EXEC): $(OBJ)
-	$(CC) $(OBJ) -o $(EXEC)
+# Reglas para generar el ejecutable usando los OBJS como dependencia 
+$(BIN_PATH)/$(BIN_NAME):$(OBJS)
+	@echo "Linking: $@"
+	$(CC) $(OBJS) -o $@
 
 # Regla para generar los archivos objeto utilizando los archivos cpp
-%.o : %.cpp
+$(BUILD_PATH)/%.o:$(SRC_PATH)/%.cpp
+	@echo "Compiling: $< -> $@"
 	$(CC) -c $(CC_FLAGS) $< -o $@
