@@ -20,7 +20,7 @@ class KnightsTour{
         std::stack<Node> s;
         int** chessboard;
         const int notvisited=0;
-        unsigned int bwidth, bheight;
+        int bwidth, bheight;
     
     public:
         KnightsTour(int bwidth, int bheight);
