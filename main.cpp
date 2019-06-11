@@ -11,14 +11,14 @@ int main(int argn, char* argv[]){
     else{
         cout<<"+Enter board parameters+"<<endl;
         cout<<"Board width: ";
-        cin>>bwidth; cout<<endl;
-
+        cin>>bwidth;
         cout<<"Board height: ";
         cin>>bheight; cout<<endl;
     }
 
     KnightsTour tour(bwidth, bheight);
-    cout<<"The tour is possible?, total paths: "<<tour.countpaths()<<endl;
+    // tour.countpaths();
+    cout<<"The tour is possible?, total paths: \n"<<tour.isthereapath()<<endl;
 
     return 0;
 }

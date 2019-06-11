@@ -1,26 +1,40 @@
 #include <stack>
 
-struct Node{
-    int x;
-    int y;
-    int movedir;//0...7
-    int turn;
-    void print() const{
-        std::cout<<"Node{"<<x<<","<<y<<","<<movedir<<","<<turn<<"}\n";
-    }
+class Node{
+    private:
+        bool movedirs[8];//0...7
+        int movescount;
+
+    public:
+        int x;
+        int y;
+        int turn;
+        Node(int x, int y, int turn);
+        ~Node();
+        void print() const{
+            std::cout<<"Node{"<<x<<","<<y<<",[ ";
+            for(int i=0; i<=7; i++) std::cout<<movedirs[i]<<" ";
+            std::cout<<"]"<<","<<turn<<"}\n";
+        }
+        void setmove(int m);
+        bool alreadymoved(int m) const;
+        int getmovescount() const;
 };
 
 class KnightsTour{
     private:
         //arriba derecha y orden contrario a las manecillas del reloj
-        int moves[8][2]={{2,1}, {2,-1},//derecha
-                        {1,-2}, {-1,-2},//abajo
-                        {-2,-1}, {-2,1},//izquierda
-                        {-1,2}, {1,2}};//arriba
+        int moves[8][2]={{2,-1}, {2,1},//derecha
+                        {1,2}, {-1,2},//abajo
+                        {-2,1}, {-2,-1},//izquierda
+                        {-1,-2}, {1,-2}};//arriba
         std::stack<Node> s;
         int** chessboard;
         const int notvisited=0;
         int bwidth, bheight;
+        void backtrack(const Node& currnode);
+        int getmove(const Node& currnode);//0...7
+        int nodegrade(int x, int y);
     
     public:
         KnightsTour(int bwidth, int bheight);

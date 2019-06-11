@@ -19,7 +19,7 @@ OBJS = $(SRCS:$(SRC_PATH)/%.cpp=$(BUILD_PATH)/%.o)
 # Especifica el compilador que quiero usar:
 CC = g++
 # Banderas que se dan como opcion al compilador:
-CC_FLAGS = -Wall -std=c++11 -pedantic
+CC_FLAGS = -Wall -std=c++11 -pedantic -g
 
 #recipes
 # Este es el target que Makefile toma por default
