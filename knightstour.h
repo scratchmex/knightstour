@@ -6,11 +6,10 @@ class Node{
         int movescount;
 
     public:
+        Node(int x, int y, int turn);
         int x;
         int y;
         int turn;
-        Node(int x, int y, int turn);
-        ~Node();
         void print() const{
             std::cout<<"Node{"<<x<<","<<y<<",[ ";
             for(int i=0; i<=7; i++) std::cout<<movedirs[i]<<" ";

@@ -17,7 +17,7 @@ int main(int argn, char* argv[]){
     }
 
     KnightsTour tour(bwidth, bheight);
-    // tour.countpaths();
+    // cout<<"The tour is possible?: "<<tour.countpaths()<<endl;
     cout<<"The tour is possible?, total paths: \n"<<tour.isthereapath()<<endl;
 
     return 0;

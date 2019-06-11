@@ -7,6 +7,6 @@ Este proyecto es un algoritmo que encuentra un camino en el cual un caballo reco
 
 El algoritmo está implementado en la función `findpath(x0,y0)` que busca un camino con el caballo empezando en `(x0,y0)`
 
-Para compilarlo usa `make all` y ejecuta el archivo '.out'
+Para compilarlo primero ejecuta `make dirs` para crear los directorios donde se va a compilar, luego usa `make all` para crear el ejecutable y corre el archivo 'knighstour.out'.
 
 La explicación de todo el codigo se encuentra en `reporte.pdf`

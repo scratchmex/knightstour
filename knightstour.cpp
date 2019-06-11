@@ -13,10 +13,6 @@ Node::Node(int x, int y, int turn){
     this->movescount=0;
 }
 
-Node::~Node(){
-    
-}
-
 void Node::setmove(int m){
     if(m<0 || m>7) throw std::invalid_argument("Move out of range");
     this->movedirs[m]=true;
